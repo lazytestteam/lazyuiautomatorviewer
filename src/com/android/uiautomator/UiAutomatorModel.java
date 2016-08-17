@@ -41,7 +41,7 @@ public class UiAutomatorModel {
     private boolean mExploreMode = true;
 
     private boolean mShowNafNodes = false;
-    private List<BasicTreeNode> mNodelist;
+    private List<UiNode> mNodelist;
     private Set<String> mSearchKeySet = new HashSet<String>();
 
     public UiAutomatorModel(File xmlDumpFile) {
@@ -81,6 +81,9 @@ public class UiAutomatorModel {
         return mSelectedNode;
     }
 
+    public List<UiNode> getmNodelist(){
+        return mNodelist;
+    }
     /**
      * change node selection in the Model recalculate the rect to highlight,
      * also notifies the View to refresh accordingly

@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Display;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -103,12 +104,8 @@ public class UiAutomatorHelper {
         }
     }
 
-    //to maintain a backward compatible api, use non-compressed as default snapshot type
-    public static UiAutomatorResult takeSnapshot(IDevice device, IProgressMonitor monitor)
-            throws UiAutomatorException {
-        return takeSnapshot(device, monitor,false);
-    }
 
+    //to maintain a backward compatible api, use non-compressed as default snapshot type
     public static UiAutomatorResult takeSnapshot(IDevice device, IProgressMonitor monitor,
            boolean compressed) throws UiAutomatorException {
         if (monitor == null) {
@@ -188,6 +185,7 @@ public class UiAutomatorHelper {
 
         return new UiAutomatorResult(xmlDumpFile, model, screenshot);
     }
+
 
     @SuppressWarnings("serial")
     public static class UiAutomatorException extends Exception {

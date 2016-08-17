@@ -41,7 +41,8 @@ public class UiHierarchyXmlLoader {
 
     private BasicTreeNode mRootNode;
     private List<Rectangle> mNafNodes;
-    private List<BasicTreeNode> mNodeList;
+    private List<UiNode> mNodeList;
+
     public UiHierarchyXmlLoader() {
     }
     
@@ -75,7 +76,7 @@ public class UiHierarchyXmlLoader {
     public BasicTreeNode parseXml(String xmlPath) {
         mRootNode = null;
         mNafNodes = new ArrayList<Rectangle>();
-        mNodeList = new ArrayList<BasicTreeNode>();
+        mNodeList = new ArrayList<UiNode>();
         // standard boilerplate to get a SAX parser
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser parser = null;
@@ -95,6 +96,7 @@ public class UiHierarchyXmlLoader {
         	
             BasicTreeNode mParentNode;
             BasicTreeNode mWorkingNode;
+            UiNode temp;
             @Override
             public void startElement(String uri, String localName, String qName,
                     Attributes attributes) throws SAXException {
@@ -181,7 +183,8 @@ public class UiHierarchyXmlLoader {
                   
 //                        	System.out.println(uiaStr);
                         }
-                        mNodeList.add(mWorkingNode);
+                        temp = (UiNode)mWorkingNode;
+                        mNodeList.add(temp);
                     }
                 }
             }
@@ -268,7 +271,7 @@ public class UiHierarchyXmlLoader {
         return Collections.unmodifiableList(mNafNodes);
     }
 
-    public List<BasicTreeNode> getAllNodes(){
+    public List<UiNode> getAllNodes(){
         return mNodeList;
     }
 }

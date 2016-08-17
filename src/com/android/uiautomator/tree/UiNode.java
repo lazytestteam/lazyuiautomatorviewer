@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.android.uiautomator.tree.BasicTreeNode;
 import org.dom4j.Document;
 import org.dom4j.Element;
 
@@ -42,10 +43,6 @@ public class UiNode extends BasicTreeNode {
 		if ("bounds".equals(key)) {
 			updateBounds(value);
 		}
-	}
-
-	public Map<String, String> getAttributes() {
-		return Collections.unmodifiableMap(mAttributes);
 	}
 
 	/**
@@ -204,4 +201,8 @@ public class UiNode extends BasicTreeNode {
 	public String getNodeClassAttribute() {
 		return this.mAttributes.get("class");
 	}
+
+    public Map<String,String> getAttributes(){
+        return mAttributes;
+    }
 }
