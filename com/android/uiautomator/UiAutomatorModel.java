@@ -17,10 +17,7 @@
 package com.android.uiautomator;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.dom4j.Element;
 import org.eclipse.swt.graphics.Rectangle;
@@ -177,6 +174,37 @@ public class UiAutomatorModel {
                 }
             }
         }
+        return result;
+    }
+
+    public List<UiNode> searchNodeByXpath(String xpath){
+        String tempXpath = xpath;
+        //先对xpath进行处理
+        //去除"//"
+        tempXpath.substring(2,tempXpath.length());
+        //根据"/"分割
+        String[] temp = tempXpath.split("/");
+        ArrayList<String> strArray = new ArrayList<String>();
+        //遍历，将[@分割出来
+        for (int i =0;i<temp.length;i++){
+            if (temp[i].indexOf("[@")>=0){
+                String classStr = temp[i].substring(0,temp[i].indexOf("[@"));
+                String markStr = temp[i].substring(temp[i].indexOf("[@"),temp[i].length());
+                strArray.add(classStr);
+                strArray.add(markStr);
+            }
+            strArray.add(temp[i]);
+        }
+        List<UiNode> result = new LinkedList<UiNode>();
+        for (UiNode node : mNodelist){
+            Map<String,String> attrList = node.getAttributes();
+            for (int j=0;j<attrList.size();j++){
+
+            }
+        }
+
+
+
         return result;
     }
 }

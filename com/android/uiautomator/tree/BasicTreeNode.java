@@ -29,7 +29,7 @@ public class BasicTreeNode {
 
     protected final List<BasicTreeNode> mChildren = new ArrayList<BasicTreeNode>();
 
-    public static List<BasicTreeNode> nodes = new ArrayList<BasicTreeNode>();
+    //public static List<BasicTreeNode> nodes = new ArrayList<BasicTreeNode>();
 
     public int x, y, width, height;
     //当前已经添加了多少个孩子节点

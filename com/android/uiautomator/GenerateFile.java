@@ -116,7 +116,7 @@ public class GenerateFile {
                     String temp = new String(chars);
                     String widgetName = "";
 
-                    if ((mresource_id != "") && (mxpath.indexOf(mresource_id)>=0)){
+                    if ((mresource_id != "") && (mxpath.indexOf(mresource_id)>=0) && (mxpath.indexOf("/")<0)){
                         mresource_id  = mresource_id.substring(mresource_id.indexOf("/")+1,mresource_id.length());
                         String[] name = mresource_id.split("_");
                         for (int k =0 ;k<name.length; k++){
@@ -145,7 +145,7 @@ public class GenerateFile {
 
                     String widgetName = "";
 
-                    if ((mresource_id != "") && (mxpath.indexOf(mresource_id)>=0)){
+                    if ((mresource_id != "") && (mxpath.indexOf(mresource_id)>=0)&& (mxpath.indexOf("/")<0)){
                         mresource_id  = mresource_id.substring(mresource_id.indexOf("/")+1,mresource_id.length());
                         String[] name = mresource_id.split("_");
                         for (int k =0 ;k<name.length; k++){
@@ -174,7 +174,7 @@ public class GenerateFile {
 
                     String widgetName = "";
 
-                    if ((mresource_id != "") && (mxpath.indexOf(mresource_id)>=0)){
+                    if ((mresource_id != "") && (mxpath.indexOf(mresource_id)>=0)&& (mxpath.indexOf("/")<0)){
                         mresource_id  = mresource_id.substring(mresource_id.indexOf("/")+1,mresource_id.length());
                         String[] name = mresource_id.split("_");
                         for (int k =0 ;k<name.length; k++){
@@ -203,7 +203,7 @@ public class GenerateFile {
 
                     String widgetName = "";
 
-                    if ((mresource_id != "") && (mxpath.indexOf(mresource_id)>=0)){
+                    if ((mresource_id != "") && (mxpath.indexOf(mresource_id)>=0)&& (mxpath.indexOf("/")<0)){
                         mresource_id  = mresource_id.substring(mresource_id.indexOf("/")+1,mresource_id.length());
                         String[] name = mresource_id.split("_");
                         for (int k =0 ;k<name.length; k++){
@@ -232,7 +232,7 @@ public class GenerateFile {
 
                     String widgetName = "";
 
-                    if ((mresource_id != "") && (mxpath.indexOf(mresource_id)>=0)){
+                    if ((mresource_id != "") && (mxpath.indexOf(mresource_id)>=0)&& (mxpath.indexOf("/")<0)){
                         mresource_id  = mresource_id.substring(mresource_id.indexOf("/")+1,mresource_id.length());
                         String[] name = mresource_id.split("_");
                         for (int k =0 ;k<name.length; k++){
@@ -260,7 +260,7 @@ public class GenerateFile {
 
                     String widgetName = "";
 
-                    if ((mresource_id != "") && (mxpath.indexOf(mresource_id)>=0)){
+                    if ((mresource_id != "") && (mxpath.indexOf(mresource_id)>=0)&& (mxpath.indexOf("/")<0)){
                         mresource_id  = mresource_id.substring(mresource_id.indexOf("/")+1,mresource_id.length());
                         String[] name = mresource_id.split("_");
                         for (int k =0 ;k<name.length; k++){
@@ -290,7 +290,7 @@ public class GenerateFile {
 
                     String widgetName = "";
 
-                    if ((mresource_id != "") && (mxpath.indexOf(mresource_id)>=0)){
+                    if ((mresource_id != "") && (mxpath.indexOf(mresource_id)>=0)&& (mxpath.indexOf("/")<0)){
                         mresource_id  = mresource_id.substring(mresource_id.indexOf("/")+1,mresource_id.length());
                         String[] name = mresource_id.split("_");
                         for (int k =0 ;k<name.length; k++){
