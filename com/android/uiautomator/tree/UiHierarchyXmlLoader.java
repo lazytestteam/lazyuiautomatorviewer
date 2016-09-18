@@ -106,7 +106,7 @@ public class UiHierarchyXmlLoader {
                 // starting an element implies that the element that has not yet been closed
                 // will be the parent of the element that is being started here
                 mParentNode = mWorkingNode;
-                
+
                 if ("hierarchy".equals(qName)) {
                     int rotation = 0;
                     for (int i = 0; i < attributes.getLength(); i++) {

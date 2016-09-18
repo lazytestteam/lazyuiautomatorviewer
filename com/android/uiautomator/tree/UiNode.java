@@ -16,10 +16,7 @@
 
 package com.android.uiautomator.tree;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,7 +33,8 @@ public class UiNode extends BasicTreeNode {
 	private final Map<String, String> mAttributes = new LinkedHashMap<String, String>();
 	private String mDisplayName = "ShouldNotSeeMe";
 	private Object[] mCachedAttributesArray;
-	
+    private List<UiNode> uChildren = new ArrayList<UiNode>();
+
 	public void addAtrribute(String key, String value) {
 		mAttributes.put(key, value);
 		updateDisplayName();
@@ -110,7 +108,12 @@ public class UiNode extends BasicTreeNode {
 		return mAttributes.get(key);
 	}
 
-	@Override
+    public List<UiNode> getUChildren(){
+        return uChildren;
+    }
+
+
+    @Override
 	public Object[] getAttributesArray() {
 		// this approach means we do not handle the situation where an attribute
 		// is added

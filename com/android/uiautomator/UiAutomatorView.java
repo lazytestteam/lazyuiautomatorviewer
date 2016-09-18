@@ -204,19 +204,19 @@ public class UiAutomatorView extends Composite {
 
                     // draw the search result rects
                     if (mSearchResult != null){
+                        Rectangle rectEmpty = new Rectangle(0,0,0,0);
+                        e.gc.setForeground(e.gc.getDevice().getSystemColor(SWT.COLOR_RED));
+                        e.gc.setLineStyle(SWT.LINE_DASH);
+                        e.gc.setLineWidth(1);
+                        e.gc.drawRectangle(mDx + getScaledSize(rectEmpty.x), mDy + getScaledSize(rectEmpty.y),getScaledSize(rectEmpty.width), getScaledSize(rectEmpty.height));
+
                         for (BasicTreeNode result : mSearchResult){
-                            if (result instanceof UiNode) {
-                                UiNode uiNode = (UiNode) result;
-                                Rectangle rect = new Rectangle(
-                                        uiNode.x, uiNode.y, uiNode.width, uiNode.height);
-                                e.gc.setForeground(
-                                        e.gc.getDevice().getSystemColor(SWT.COLOR_YELLOW));
-                                e.gc.setLineStyle(SWT.LINE_DASH);
-                                e.gc.setLineWidth(1);
-                                e.gc.drawRectangle(mDx + getScaledSize(rect.x),
-                                        mDy + getScaledSize(rect.y),
-                                        getScaledSize(rect.width), getScaledSize(rect.height));
-                            }
+                            BasicTreeNode uiNode =  result;
+                            Rectangle rect = new Rectangle(uiNode.x, uiNode.y, uiNode.width, uiNode.height);
+                            e.gc.setForeground(e.gc.getDevice().getSystemColor(SWT.COLOR_RED));
+                            e.gc.setLineStyle(SWT.LINE_DASH);
+                            e.gc.setLineWidth(1);
+                            e.gc.drawRectangle(mDx + getScaledSize(rect.x), mDy + getScaledSize(rect.y),getScaledSize(rect.width), getScaledSize(rect.height));
                         }
                     }
 
@@ -316,6 +316,32 @@ public class UiAutomatorView extends Composite {
         searchTextarea.pack();
         itemSeparator.setWidth(searchTextarea.getBounds().width);
         itemSeparator.setControl(searchTextarea);
+
+        ToolItem btn = new ToolItem(searchtoolbar,SWT.PUSH | SWT.BORDER);
+        btn.setText("搜索");
+        btn.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent) {
+                String term = searchTextarea.getText();
+                searchTextarea.setText("");
+                if (!term.isEmpty()) {
+                    if (term.equals(mLastSearchedTerm)) {
+                        nextSearchResult();
+                        return;
+                    }
+                    clearSearchResult();
+
+                    mSearchResult = mModel.searchByXpath(term);
+                    if (!mSearchResult.isEmpty()) {
+                        mSearchResultIndex = 0;
+                        updateSearchResultSelection();
+                        mLastSearchedTerm = term;
+                    }
+                }
+
+            }
+        });
+
         itemPrev = new ToolItem(searchtoolbar, SWT.SIMPLE);
         itemPrev.setImage(ImageHelper.loadImageDescriptorFromResource("images/prev.png")
                 .createImage());
@@ -330,32 +356,60 @@ public class UiAutomatorView extends Composite {
         coordinateLabel.setText("");
         coordinateLabel.setEnabled(false);
 
+//        searchTextarea.addKeyListener(new KeyListener() {
+//            @Override
+//            public void keyPressed(KeyEvent keyEvent) {
+//                if (keyEvent.keyCode==SWT.CR){
+//                    String term = searchTextarea.getText();
+//                    if (!term.isEmpty()) {
+//                        if (term.equals(mLastSearchedTerm)) {
+//                            nextSearchResult();
+//                            return;
+//                        }
+//                        clearSearchResult();
+//
+//                        mSearchResult = mModel.searchByXpath(term);
+//                        if (!mSearchResult.isEmpty()) {
+//                            mSearchResultIndex = 0;
+//                            updateSearchResultSelection();
+//                            mLastSearchedTerm = term;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void keyReleased(KeyEvent keyEvent) {
+//            }
+//        });
         // add search function
-        searchTextarea.addKeyListener(new KeyListener() {
-            @Override
-            public void keyReleased(KeyEvent event) {
-                if (event.keyCode == SWT.CR) {
-                    String term = searchTextarea.getText();
-                    if (!term.isEmpty()) {
-                        if (term.equals(mLastSearchedTerm)) {
-                            nextSearchResult();
-                            return;
-                        }
-                        clearSearchResult();
-                        mSearchResult = mModel.searchNode(term);
-                        if (!mSearchResult.isEmpty()) {
-                            mSearchResultIndex = 0;
-                            updateSearchResultSelection();
-                            mLastSearchedTerm = term;
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void keyPressed(KeyEvent event) {
-            }
-        });
+//        searchTextarea.addKeyListener(new KeyListener() {
+//            @Override
+//            public void keyReleased(KeyEvent event) {
+//                if (event.keyCode == SWT.CR) {
+//                    String term = searchTextarea.getText();
+//                    if (!term.isEmpty()) {
+//
+//                        if (term.equals(mLastSearchedTerm)) {
+//                            nextSearchResult();
+//                            return;
+//                        }
+//                        clearSearchResult();
+//
+//                        mSearchResult = mModel.searchByXpath(term);
+//                        if (!mSearchResult.isEmpty()) {
+//                            mSearchResultIndex = 0;
+//                            updateSearchResultSelection();
+//                            //mLastSearchedTerm = term;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void keyPressed(KeyEvent event) {
+//            }
+//        });
         SelectionListener l = new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent se) {
@@ -676,6 +730,7 @@ public class UiAutomatorView extends Composite {
         // putting another root node on top of existing root node
         // because Tree seems to like to hide the root node
         wrapper.addChild(mModel.getXmlRootNode());
+
         setInputHierarchy(wrapper);
         mTreeViewer.getTree().setFocus();
 

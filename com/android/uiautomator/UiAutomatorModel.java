@@ -30,6 +30,7 @@ import com.android.uiautomator.tree.UiNode;
 
 public class UiAutomatorModel {
     private BasicTreeNode mRootNode;
+    private UiNode uRootNode;
     private BasicTreeNode mSelectedNode;
     private Rectangle mCurrentDrawingRect;
     private List<Rectangle> mNafNodes;
@@ -72,6 +73,10 @@ public class UiAutomatorModel {
 
     public BasicTreeNode getXmlRootNode() {
         return mRootNode;
+    }
+
+    public UiNode getuRootNode(){
+        return  uRootNode;
     }
 
     public BasicTreeNode getSelectedNode() {
@@ -177,34 +182,316 @@ public class UiAutomatorModel {
         return result;
     }
 
-    public List<UiNode> searchNodeByXpath(String xpath){
-        String tempXpath = xpath;
-        //先对xpath进行处理
-        //去除"//"
-        tempXpath.substring(2,tempXpath.length());
-        //根据"/"分割
-        String[] temp = tempXpath.split("/");
-        ArrayList<String> strArray = new ArrayList<String>();
-        //遍历，将[@分割出来
-        for (int i =0;i<temp.length;i++){
-            if (temp[i].indexOf("[@")>=0){
-                String classStr = temp[i].substring(0,temp[i].indexOf("[@"));
-                String markStr = temp[i].substring(temp[i].indexOf("[@"),temp[i].length());
-                strArray.add(classStr);
-                strArray.add(markStr);
+
+    public List<BasicTreeNode> searchByXpath(String xpath){
+        Map<String,String> xMap = parseXpath(xpath);
+        String class0 = xMap.get("class0");
+        String resourceId = xMap.get("resource-id");
+        String text  = xMap.get("text");
+        int length = xMap.size()-3;
+
+        if(resourceId != ""){
+            List<BasicTreeNode> parents = new ArrayList<BasicTreeNode>();
+            List<BasicTreeNode> childList = new ArrayList<BasicTreeNode>();
+            int index = 1;
+            for (BasicTreeNode node : mNodelist){
+                UiNode uNode = (UiNode)node;
+                if (uNode.getAttributes().get("resource-id").equals(resourceId) && uNode.getAttributes().get("class").equals(class0)){
+                    parents.add(node);
+                }
             }
-            strArray.add(temp[i]);
-        }
-        List<UiNode> result = new LinkedList<UiNode>();
-        for (UiNode node : mNodelist){
-            Map<String,String> attrList = node.getAttributes();
-            for (int j=0;j<attrList.size();j++){
 
+            if (xMap.size() == 3){
+                if (parents.size()==0){
+                    return null;
+                }
+                else {
+                    return parents;
+                }
+            }
+            else{
+                while(index <= length){
+                    String classNameStr = xMap.get("class"+index);
+                    childList.clear();
+                    for (BasicTreeNode node : parents){
+                        List<BasicTreeNode> childs = node.getChildrenList();
+                        if (classNameStr.indexOf("[")>=0){
+                            String className = classNameStr.substring(0,classNameStr.indexOf("["));
+                            int indexStr = Integer.parseInt(classNameStr.substring(classNameStr.indexOf("[")+1,classNameStr.indexOf("]")));
+
+                            int number = 0;
+                            for (int i =0;i<childs.size();i++){
+                                UiNode uNode = (UiNode)childs.get(i);
+
+                                if (uNode.getAttributes().get("class").equals(className)){
+                                    number++;
+                                    if (number == indexStr){
+                                        childList.add(childs.get(i));
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            for (BasicTreeNode child : childs){
+                                childList.add(child);
+                            }
+                        }
+                    }
+                    if (classNameStr.indexOf("[")>=0){
+                        String className = classNameStr.substring(0,classNameStr.indexOf("["));
+
+                        parents.clear();
+
+                        for (BasicTreeNode node : childList){
+                            UiNode child = (UiNode)node;
+                            if (child.getAttributes().get("class").equals(className)){
+                                parents.add(node);
+                            }
+                        }
+                    }
+                    else{
+                        parents.clear();
+
+                        for (BasicTreeNode node : childList){
+                            UiNode child = (UiNode)node;
+                            if (child.getAttributes().get("class").equals(classNameStr)){
+                                parents.add(node);
+                            }
+                        }
+                    }
+                    index ++;
+                }
+                if (parents.size()==0){
+                    return null;
+                }
+                else {
+                    return parents;
+                }
             }
         }
 
+        if (text != ""){
+            List<BasicTreeNode> parents = new ArrayList<BasicTreeNode>();
+            List<BasicTreeNode> childList = new ArrayList<BasicTreeNode>();
+            int index = 1;
+            for (BasicTreeNode node : mNodelist){
+                UiNode uNode = (UiNode)node;
+                if (uNode.getAttributes().get("text").equals(text) && uNode.getAttributes().get("class").equals(class0)){
+                    parents.add(node);
+                }
+            }
 
+            if (xMap.size() == 3){
+                if (parents.size()==0){
+                    return null;
+                }
+                else {
+                    return parents;
+                }
+            }
+            else{
+                while(index <= length){
+                    String classNameStr = xMap.get("class"+index);
+                    childList.clear();
+                    for (BasicTreeNode node : parents){
+                        List<BasicTreeNode> childs = node.getChildrenList();
+                        if (classNameStr.indexOf("[")>=0){
+                            String className = classNameStr.substring(0,classNameStr.indexOf("["));
+                            int indexStr = Integer.parseInt(classNameStr.substring(classNameStr.indexOf("[")+1,classNameStr.indexOf("]")));
 
-        return result;
+                            int number = 0;
+                            for (int i =0;i<childs.size();i++){
+                                UiNode uNode = (UiNode)childs.get(i);
+
+                                if (uNode.getAttributes().get("class").equals(className)){
+                                    number++;
+                                    if (number == indexStr){
+                                        childList.add(childs.get(i));
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            for (BasicTreeNode child : childs){
+                                childList.add(child);
+                            }
+                        }
+                    }
+                    if (classNameStr.indexOf("[")>=0){
+                        String className = classNameStr.substring(0,classNameStr.indexOf("["));
+
+                        parents.clear();
+
+                        for (BasicTreeNode node : childList){
+                            UiNode child = (UiNode)node;
+                            if (child.getAttributes().get("class").equals(className)){
+                                parents.add(node);
+                            }
+                        }
+                    }
+                    else{
+                        parents.clear();
+
+                        for (BasicTreeNode node : childList){
+                            UiNode child = (UiNode)node;
+                            if (child.getAttributes().get("class").equals(classNameStr)){
+                                parents.add(node);
+                            }
+                        }
+                    }
+                    index ++;
+                }
+                if (parents.size()==0){
+                    return null;
+                }
+                else {
+                    return parents;
+                }
+            }
+        }
+        else{
+            List<BasicTreeNode> parents = new ArrayList<BasicTreeNode>();
+            List<BasicTreeNode> childList = new ArrayList<BasicTreeNode>();
+            int index = 1;
+            for (BasicTreeNode node : mNodelist){
+                UiNode uNode = (UiNode)node;
+                if (uNode.getAttributes().get("class").equals(class0)){
+                    parents.add(node);
+                }
+            }
+
+            if (xMap.size() == 3){
+                if (parents.size()==0){
+                    return null;
+                }
+                else {
+                    return parents;
+                }
+            }
+            else{
+                while(index <= length){
+                    String classNameStr = xMap.get("class"+index);
+                    childList.clear();
+                    for (BasicTreeNode node : parents){
+                        List<BasicTreeNode> childs = node.getChildrenList();
+                        if (classNameStr.indexOf("[")>=0){
+                            String className = classNameStr.substring(0,classNameStr.indexOf("["));
+                            int indexStr = Integer.parseInt(classNameStr.substring(classNameStr.indexOf("[")+1,classNameStr.indexOf("]")));
+
+                            int number = 0;
+                            for (int i =0;i<childs.size();i++){
+                                UiNode uNode = (UiNode)childs.get(i);
+
+                                if (uNode.getAttributes().get("class").equals(className)){
+                                    number++;
+                                    if (number == indexStr){
+                                        childList.add(childs.get(i));
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            for (BasicTreeNode child : childs){
+                                childList.add(child);
+                            }
+                        }
+                    }
+                    if (classNameStr.indexOf("[")>=0){
+                        String className = classNameStr.substring(0,classNameStr.indexOf("["));
+
+                        parents.clear();
+
+                        for (BasicTreeNode node : childList){
+                            UiNode child = (UiNode)node;
+                            if (child.getAttributes().get("class").equals(className)){
+                                parents.add(node);
+                            }
+                        }
+                    }
+                    else{
+                        parents.clear();
+
+                        for (BasicTreeNode node : childList){
+                            UiNode child = (UiNode)node;
+                            if (child.getAttributes().get("class").equals(classNameStr)){
+                                parents.add(node);
+                            }
+                        }
+                    }
+                    index ++;
+                }
+                if (parents.size()==0){
+                    return null;
+                }
+                else {
+                    return parents;
+                }
+            }
+        }
     }
+
+
+    public Map<String,String> parseXpath(String xpath){
+        xpath = xpath.substring(2,xpath.length());
+        String first="";
+        String[] other =null;
+        String[] xlist = null;
+        Map<String,String> map = new HashMap<String, String>();
+        map.put("class0","");
+        map.put("text","");
+        map.put("resource-id","");
+
+        if (xpath.indexOf("@resource-id")>=0){
+            int end = xpath.indexOf("']")+2;
+            first = xpath.substring(0,end);
+            if (end<xpath.length()){
+                other = xpath.substring(end+1,xpath.length()).split("/");
+            }
+        }
+        else {
+            xlist = xpath.split("/");
+        }
+        if (first != ""){
+            String xclass = first.substring(0,first.indexOf("[@"));
+            map.remove("class0");
+            map.put("class0",xclass);
+
+            int begin = first.indexOf("=")+2;
+            int end = first.indexOf("']");
+            String xresourceId = first.substring(begin,end);
+            map.remove("resource-id");
+            map.put("resource-id",xresourceId);
+
+            if (other != null){
+                for(int i =0;i< other.length; i++){
+                    map.put("class"+(i+1),other[i]);
+                }
+            }
+        }
+        else{
+            if (xlist[0].indexOf("@")>=0){
+                String xclass = xlist[0].substring(0,xlist[0].indexOf("[@"));
+                map.remove("class0");
+                map.put("class0",xclass);
+
+                String xtext = xlist[0].substring(xlist[0].indexOf("=")+2,xlist[0].indexOf("']"));
+                map.remove("text");
+                map.put("text",xtext);
+
+                for(int i =1;i< xlist.length; i++){
+                    map.put("class"+(i),xlist[i]);
+                }
+            }
+            else {
+                map.remove("class0");
+                map.put("class0",xlist[0]);
+                for(int i =1;i< xlist.length; i++){
+                    map.put("class"+(i),xlist[i]);
+                }
+            }
+        }
+        return map;
+    }
+
+
 }
