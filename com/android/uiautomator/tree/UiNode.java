@@ -139,7 +139,7 @@ public class UiNode extends BasicTreeNode {
 		//------------------------------
 		String resourceid = getAttribute("resource-id");
 		if(resourceid != null && !resourceid.equals("")){
-			String idxpath = "//"+ className + "[@resource-id=\\\"" + resourceid + "\\\"]";
+			String idxpath = "//"+ className + "[@resource-id=\'" + resourceid + "\']";
 			List<Element> list = UiHierarchyXmlLoader.getElementObjects(Const.document, idxpath.replaceAll("\\\\\"", "\""));
 			if(list.size()==1){
 				xpath = idxpath.substring(1);
@@ -148,7 +148,7 @@ public class UiNode extends BasicTreeNode {
 				String a = list.get(0).getUniquePath();
 				String b = list.get(0).getPath();
 				resourceid = resourceid.replaceAll("'", "\\\\'");
-				xpath += "[@resource-id=\\\"" + resourceid + "\\\"";
+				xpath += "[@resource-id=\'" + resourceid + "\'";
 				flag = true;
 			}
 		}
@@ -157,9 +157,9 @@ public class UiNode extends BasicTreeNode {
 		if (text != null && !text.equals("")) {
 			text = text.replaceAll("\"", "\\\\\"");
 			if(flag){
-				xpath += " and @text=\\\"" + text + "\\\"";
+				xpath += " and @text=\'" + text + "\'";
 			}else{
-				xpath += "[@text=\\\"" + text + "\\\"";
+				xpath += "[@text=\'" + text + "\'";
 				flag = true;
 			}
 		}
@@ -167,9 +167,9 @@ public class UiNode extends BasicTreeNode {
 		if(!content_desc.equals("")){
 			content_desc = content_desc.replaceAll("'", "\\\\'");
 			if(flag){
-				xpath += " and @content-desc=\\\"" + content_desc + "\\\"";
+				xpath += " and @content-desc=\'" + content_desc + "\'";
 			}else{
-				xpath += "[@content-desc=\\\"" + content_desc + "\\\"";
+				xpath += "[@content-desc=\'" + content_desc + "\'";
 				flag = true;
 			}
 		}

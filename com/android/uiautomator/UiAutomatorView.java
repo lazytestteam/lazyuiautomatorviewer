@@ -122,14 +122,18 @@ public class UiAutomatorView extends Composite {
     private String mLastSearchedTerm;
 
     private Cursor mCrossCursor;
+
+    private UiAutomatorViewer mViewer;
+
 /*
     final Text fileNameText;
     final Text androidText;
     final Combo applicationCombo;
     final Combo versionCombo;*/
 
-    public UiAutomatorView(final Composite parent, int style) {
+    public UiAutomatorView(final Composite parent, int style, UiAutomatorViewer viewer) {
         super(parent, SWT.NONE);
+        mViewer = viewer;
         setLayout(new FillLayout());
         SashForm baseSash = new SashForm(this, SWT.HORIZONTAL);
         mOrginialCursor = getShell().getCursor();
@@ -450,6 +454,11 @@ public class UiAutomatorView extends Composite {
                 redrawScreenshot();
                 if (selectedNode != null) {
                     loadAttributeTable();
+//                    String xpth = selectedNode;
+//                    String desp = selectedNode;
+//                    String name = selectedNode;
+//                    dlg.updateSelXpathInfo(xpath, desp, name);
+                    mViewer.updateInfo();
                 }
             }
         });
@@ -513,7 +522,7 @@ public class UiAutomatorView extends Composite {
         });
         // sets the ratio of the vertical split: left 5 vs right 3
         baseSash.setWeights(new int[] {5, 3 });
-        
+
     }
     /**  
      * 用于显示列内容(内部类)  

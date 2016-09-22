@@ -19,64 +19,50 @@ package com.android.uiautomator.actions;
 import com.android.uiautomator.ControlDefineDialog;
 import com.android.uiautomator.UiAutomatorModel;
 import com.android.uiautomator.UiAutomatorViewer;
+import com.android.uiautomator.tree.UiNode;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.widgets.Display;
-
+import com.android.uiautomator.tree.BasicTreeNode;
 import java.io.File;
 
 public class ControlDefineAction extends Action {
     private UiAutomatorViewer mViewer;
+    private UiAutomatorModel mModel;
+    private ControlDefineDialog d;
 
     public ControlDefineAction(UiAutomatorViewer viewer) {
-        super("&Open");
+        super("&选择并导出控件");
 
         mViewer = viewer;
     }
 
     @Override
     public ImageDescriptor getImageDescriptor() {
-        return ImageHelper.loadImageDescriptorFromResource("images/open-folder.png");
+        return ImageHelper.loadImageDescriptorFromResource("images/sel.png");
     }
 
     @Override
     public void run() {
-        ControlDefineDialog d = new ControlDefineDialog(Display.getDefault().getActiveShell());
+        d = new ControlDefineDialog(Display.getCurrent().getActiveShell());
         if (d.open() != ControlDefineDialog.OK) {
             return;
         }
 
-        UiAutomatorModel model;
-        try {
-            model = new UiAutomatorModel(d.getXmlDumpFile());
-        } catch (Exception e) {
-            // FIXME: show error
+    }
+
+    public void updateDlg() {
+        if (d == null || d.getShell() == null)
             return;
-        }
-
-        Image img = null;
-        File screenshot = d.getScreenshotFile();
-        if (screenshot != null) {
-            try {
-                ImageData[] data = new ImageLoader().load(screenshot.getAbsolutePath());
-
-                // "data" is an array, probably used to handle images that has multiple frames
-                // i.e. gifs or icons, we just care if it has at least one here
-                if (data.length < 1) {
-                    throw new RuntimeException("Unable to load image: "
-                            + screenshot.getAbsolutePath());
-                }
-
-                img = new Image(Display.getDefault(), data[0]);
-            } catch (Exception e) {
-                // FIXME: show error
-                return;
-            }
-        }
-
-        mViewer.setModel(model, d.getXmlDumpFile(), img);
+        mModel = mViewer.getModel();
+        UiNode node = (UiNode)mModel.getSelectedNode();
+        String xpath = node.getAttribute("xpath");
+        String description = node.getAttribute("text");
+        String controlClass = node.getAttribute("class");
+        d.updateSelXpathInfo(xpath, description, controlClass);
     }
 }

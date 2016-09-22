@@ -23,7 +23,7 @@ public class GenerateXpathFileAction extends Action {
     private GenerateFile table;
 
     public GenerateXpathFileAction(UiAutomatorViewer viewer) {
-        super("&Open");
+        super("&导出所有控件");
         this.mViewer = viewer;
     }
 

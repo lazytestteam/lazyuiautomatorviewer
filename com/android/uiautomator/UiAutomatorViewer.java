@@ -19,6 +19,7 @@ package com.android.uiautomator;
 import com.android.uiautomator.actions.OpenFilesAction;
 import com.android.uiautomator.actions.SaveScreenShotAction;
 import com.android.uiautomator.actions.ScreenshotAction;
+import com.android.uiautomator.actions.GenerateXpathFileAction;
 import com.android.uiautomator.actions.ControlDefineAction;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.window.ApplicationWindow;
@@ -37,6 +38,7 @@ import java.io.File;
 public class UiAutomatorViewer extends ApplicationWindow {
     private UiAutomatorView mUiAutomatorView;
     private UiAutomatorModel uModel;
+    private ControlDefineAction controlDefineAction;
     public UiAutomatorViewer() {
         super(null);
     }
@@ -59,12 +61,13 @@ public class UiAutomatorViewer extends ApplicationWindow {
         toolBarManager.add(new ScreenshotAction(this,false));
         toolBarManager.add(new ScreenshotAction(this,true));
         toolBarManager.add(new SaveScreenShotAction(this));
-        //toolBarManager.add(new GenerateXpathFileAction(this));
-        toolBarManager.add(new ControlDefineAction(this));
+        toolBarManager.add(new GenerateXpathFileAction(this));
+        controlDefineAction = new ControlDefineAction(this);
+        toolBarManager.add(controlDefineAction);
         ToolBar tb = toolBarManager.createControl(c);
         tb.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-        mUiAutomatorView = new UiAutomatorView(c, SWT.BORDER);
+        mUiAutomatorView = new UiAutomatorView(c, SWT.BORDER, this);
         mUiAutomatorView.setLayoutData(new GridData(GridData.FILL_BOTH));
 
         return parent;
@@ -116,4 +119,9 @@ public class UiAutomatorViewer extends ApplicationWindow {
     public UiAutomatorModel getModel(){
         return uModel;
     }
+
+    public void updateInfo() {
+        controlDefineAction.updateDlg();
+    }
+
 }
