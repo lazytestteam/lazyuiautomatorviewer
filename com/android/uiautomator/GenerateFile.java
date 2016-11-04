@@ -20,24 +20,14 @@ import java.util.regex.Pattern;
  * @version V1.0
  * @Title: ${FILE_NAME}
  * @Package com.android.uiautomator
- * @Description:
+ * @Description:命令栏新添加的 “一键导出控件”的事件处理
  * @date 2016/7/26
  */
 public class GenerateFile {
 
     public void generateFile(List<UiNode> nodes) {
         removeLayout(nodes,"Layout");
-
-
-
-
         try {
-//            DirectoryDialog directoryDialog = new DirectoryDialog(Display.getDefault().getActiveShell());
-//            directoryDialog.setText("Save xpath file");
-//            final String path = directoryDialog.open();
-//            if (path == null){
-//                return;
-//            }
 
             FileDialog dialog = new FileDialog(Display.getDefault().getActiveShell(),SWT.SAVE);
             dialog.setText("保存java文件");
@@ -48,10 +38,7 @@ public class GenerateFile {
             if(file == null){
                 return;
             }
-//            if (!file.contains(".java")){
-//                MessageDialog.openError(Display.getDefault().getActiveShell(),"注意！注意！注意！","文件名必须以.java结尾");
-//                return;
-//            }
+            
             String packageName ="test";
 
             String fileName = dialog.getFileName();
@@ -64,15 +51,6 @@ public class GenerateFile {
                 int begin = path.indexOf("com");
                 packageName= path.substring(begin,path.length()).replace("\\",".");
             }
-
-
-
-            //File xpathFile = new File(fileName,".java");
-//
-//            File hFile = new File(path,".html");
-//            OutputStreamWriter hWriter = new OutputStreamWriter(new FileOutputStream(hFile,false),"UTF-8");
-//            hWriter.write("");
-
 
             OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file,false),"UTF-8");
 

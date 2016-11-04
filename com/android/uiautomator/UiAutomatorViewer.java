@@ -35,6 +35,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import java.io.File;
 
+/**
+ * @author huangshuli
+ * @Description 程序入口
+ */
 public class UiAutomatorViewer extends ApplicationWindow {
     private UiAutomatorView mUiAutomatorView;
     private UiAutomatorModel uModel;

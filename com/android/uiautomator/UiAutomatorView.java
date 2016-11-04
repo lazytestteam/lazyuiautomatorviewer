@@ -85,6 +85,10 @@ import com.android.uiautomator.tree.BasicTreeNode;
 import com.android.uiautomator.tree.BasicTreeNodeContentProvider;
 import com.android.uiautomator.tree.UiNode;
 
+/**
+ * @author huangshuli
+ * @Description 视图层的实现
+ */
 public class UiAutomatorView extends Composite {
     private static final int IMG_BORDER = 2;
 

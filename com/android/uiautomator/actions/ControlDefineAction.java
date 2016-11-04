@@ -30,6 +30,10 @@ import org.eclipse.swt.widgets.Display;
 import com.android.uiautomator.tree.BasicTreeNode;
 import java.io.File;
 
+/**
+ * @author huangshuli
+ * @Description 命令栏新添加的“选择导出控件”的事件处理
+ */
 public class ControlDefineAction extends Action {
     private UiAutomatorViewer mViewer;
     private UiAutomatorModel mModel;

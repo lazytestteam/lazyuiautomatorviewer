@@ -24,14 +24,18 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author huangshuli
+ * @Description 调试模式。本地调试时，需要手动修改getAdbLocation()方法中，toolsDir的路径为本机sdk的安装目录
+ */
 public class DebugBridge {
     private static AndroidDebugBridge sDebugBridge;
 
     @SuppressWarnings("unused")
 	private static String getAdbLocation() {
-        //String toolsDir = System.getProperty("com.android.uiautomator.bindir"); //$NON-NLS-1$
+        String toolsDir = System.getProperty("com.android.uiautomator.bindir"); //$NON-NLS-1$
     	//String toolsDir = "E:\\appium\\android-sdk_r24.3.4-windows\\android-sdk-windows\\tools";
-        String toolsDir = "C:\\Program Files (x86)\\Android\\android-sdk\\platform-tools";
+        //String toolsDir = "C:\\Program Files (x86)\\Android\\android-sdk\\platform-tools";
         if (toolsDir == null) {
             return null;
         }

@@ -28,6 +28,10 @@ import com.android.uiautomator.tree.BasicTreeNode.IFindNodeListener;
 import com.android.uiautomator.tree.UiHierarchyXmlLoader;
 import com.android.uiautomator.tree.UiNode;
 
+/**
+ * @author huangshuli
+ * @Description 业务模型层，负责xpath解析、节点搜索处理等。
+ */
 public class UiAutomatorModel {
     private BasicTreeNode mRootNode;
     private UiNode uRootNode;
